@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/deck_bg"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add web link"
+        android:textColor="@color/deck_text"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/editLinkLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="Label (e.g. YouTube)"
+        android:textColor="@color/deck_text"
+        android:textColorHint="@color/deck_text_dim" />
+
+    <EditText
+        android:id="@+id/editLinkUrl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="https://example.com"
+        android:inputType="textUri"
+        android:textColor="@color/deck_text"
+        android:textColorHint="@color/deck_text_dim" />
+
+    <Button
+        android:id="@+id/btnAddLink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Add link tile" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginVertical="20dp"
+        android:background="#33FFFFFF" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Apps installed on your PC"
+        android:textColor="@color/deck_text"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/editFilter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="Filter…"
+        android:textColor="@color/deck_text"
+        android:textColorHint="@color/deck_text_dim" />
+
+    <TextView
+        android:id="@+id/textAppsStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:text="Loading apps from PC…"
+        android:textColor="@color/deck_text_dim" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerApps"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+</LinearLayout>

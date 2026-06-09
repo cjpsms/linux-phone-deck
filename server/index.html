@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0d0e13">
+<title>Deck</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎛️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0e13;
+    --panel: #16181f;
+    --panel-press: #1f222c;
+    --fg: #e6e8ee;
+    --dim: #6b7080;
+    --accent: #5eead4;          /* teal — single accent */
+    --border: rgba(255,255,255,0.06);
+    --radius: 14px;
+    --font-mono: 'JetBrains Mono', monospace;
+    --font-disp: 'Space Grotesk', sans-serif;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body {
+    margin: 0; background: var(--bg); color: var(--fg);
+    font-family: var(--font-disp);
+    padding: max(1.25rem, env(safe-area-inset-top)) 1.25rem 2rem;
+    min-height: 100vh;
+  }
+  header {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: 1.5rem;
+  }
+  h1 { font-size: 1.4rem; font-weight: 700; margin: 0; letter-spacing: -0.01em; }
+  .status {
+    font-family: var(--font-mono); font-size: 0.7rem; color: var(--dim);
+    display: flex; align-items: center; gap: 0.4rem;
+  }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--dim); }
+  .dot.ok { background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+  .dot.bad { background: #f87171; }
+
+  .grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem;
+  }
+  @media (max-width: 360px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+
+  .btn {
+    aspect-ratio: 1; border: 1px solid var(--border); background: var(--panel);
+    border-radius: var(--radius); color: var(--fg);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 0.5rem; padding: 0.5rem; cursor: pointer;
+    transition: transform 90ms ease-out, background 90ms ease-out;
+    font-family: inherit;
+  }
+  .btn:active { transform: scale(0.93); background: var(--panel-press); }
+  .btn .ico { font-size: 1.8rem; line-height: 1; }
+  .btn .label {
+    font-family: var(--font-mono); font-size: 0.62rem; font-weight: 500;
+    text-align: center; color: var(--fg); letter-spacing: 0.02em;
+  }
+  .btn .kind {
+    font-family: var(--font-mono); font-size: 0.5rem; color: var(--dim);
+    text-transform: uppercase; letter-spacing: 0.1em;
+  }
+  .btn.add { border-style: dashed; color: var(--dim); }
+  .btn.add .ico { color: var(--dim); }
+
+  /* edit modal */
+  dialog {
+    border: 1px solid var(--border); background: var(--panel); color: var(--fg);
+    border-radius: var(--radius); padding: 1.25rem; width: min(90vw, 340px);
+  }
+  dialog::backdrop { background: rgba(0,0,0,0.6); }
+  dialog h2 { font-size: 1rem; margin: 0 0 1rem; }
+  label { display: block; font-family: var(--font-mono); font-size: 0.65rem; color: var(--dim); margin: 0.75rem 0 0.25rem; }
+  input, select {
+    width: 100%; background: var(--bg); border: 1px solid var(--border); color: var(--fg);
+    border-radius: 8px; padding: 0.6rem; font-family: var(--font-mono); font-size: 0.8rem;
+  }
+  .row { display: flex; gap: 0.5rem; margin-top: 1.25rem; }
+  .row button {
+    flex: 1; padding: 0.7rem; border-radius: 8px; border: none; cursor: pointer;
+    font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700;
+  }
+  .primary { background: var(--accent); color: #08120f; }
+  .ghost { background: transparent; border: 1px solid var(--border); color: var(--dim); }
+  .hint { font-family: var(--font-mono); font-size: 0.55rem; color: var(--dim); margin-top: 0.4rem; line-height: 1.5; }
+</style>
+</head>
+<body>
+  <header>
+    <h1>Deck</h1>
+    <div class="status"><span class="dot" id="dot"></span><span id="statusTxt">checking…</span></div>
+  </header>
+
+  <div class="grid" id="grid"></div>
+
+  <dialog id="dlg">
+    <h2>New button</h2>
+    <label>Label</label>
+    <input id="f-label" placeholder="Steam">
+    <label>Emoji</label>
+    <input id="f-icon" placeholder="🎮" maxlength="2">
+    <label>Type</label>
+    <select id="f-type">
+      <option value="link">link — open on phone</option>
+      <option value="launch">launch — open app on PC</option>
+      <option value="notify">notify — ping the PC</option>
+    </select>
+    <label>Value</label>
+    <input id="f-value" placeholder="see hint below">
+    <div class="hint" id="hint"></div>
+    <div class="row">
+      <button class="ghost" id="cancel">cancel</button>
+      <button class="primary" id="save">save</button>
+    </div>
+  </dialog>
+
+<script>
+// ───────────────────────────────────────────────────────────
+// CONFIG
+const TOKEN = "change-me";          // must match server.py
+const PC = location.origin;         // page is served BY the PC, so this just works
+// ───────────────────────────────────────────────────────────
+
+// Default buttons. Users can add more (saved in the phone's localStorage).
+const DEFAULTS = [
+  { label: "YouTube",  icon: "📺", type: "link",   value: "https://youtube.com" },
+  { label: "Steam",    icon: "🎮", type: "launch", value: "steam" },
+  { label: "Discord",  icon: "💬", type: "launch", value: "discord" },
+  { label: "Files",    icon: "📁", type: "launch", value: "files" },
+  { label: "Ping PC",  icon: "🔔", type: "notify", value: "Hey! Tapped from phone." },
+];
+
+const HINTS = {
+  link:   "A URL (https://…) or app scheme (spotify://). Opens on THIS phone.",
+  launch: "A key from the ALLOWED whitelist in server.py (steam, firefox, files…).",
+  notify: "The text to show in the PC notification.",
+};
+
+const load = () => JSON.parse(localStorage.getItem("deck") || "null") || DEFAULTS;
+const save = (b) => localStorage.setItem("deck", JSON.stringify(b));
+let buttons = load();
+
+async function post(path, body) {
+  const r = await fetch(PC + path, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "X-Token": TOKEN },
+    body: JSON.stringify(body),
+  });
+  if (!r.ok) throw new Error((await r.json()).error || r.status);
+}
+
+async function fire(b) {
+  if (b.type === "link") { window.open(b.value, "_blank"); return; }
+  if (b.type === "launch") return post("/launch", { app: b.value });
+  if (b.type === "notify") return post("/notify", { title: "Deck", body: b.value });
+}
+
+function render() {
+  const grid = document.getElementById("grid");
+  grid.innerHTML = "";
+  buttons.forEach((b, i) => {
+    const el = document.createElement("button");
+    el.className = "btn";
+    el.innerHTML = `<span class="ico">${b.icon || "▢"}</span>
+                    <span class="label">${b.label}</span>
+                    <span class="kind">${b.type}</span>`;
+    el.onclick = () => fire(b).catch(e => flash(false, e.message));
+    el.oncontextmenu = (e) => { e.preventDefault(); if (confirm(`Delete "${b.label}"?`)) { buttons.splice(i,1); save(buttons); render(); } };
+    grid.appendChild(el);
+  });
+  const add = document.createElement("button");
+  add.className = "btn add";
+  add.innerHTML = `<span class="ico">＋</span><span class="label">add</span>`;
+  add.onclick = openDialog;
+  grid.appendChild(add);
+}
+
+// status check
+async function ping() {
+  const dot = document.getElementById("dot"), txt = document.getElementById("statusTxt");
+  try { await fetch(PC + "/", { method: "GET" }); dot.className = "dot ok"; txt.textContent = "connected"; }
+  catch { dot.className = "dot bad"; txt.textContent = "no PC"; }
+}
+function flash(ok, msg) {
+  const dot = document.getElementById("dot"), txt = document.getElementById("statusTxt");
+  dot.className = "dot " + (ok ? "ok" : "bad");
+  txt.textContent = ok ? "sent" : msg;
+  setTimeout(ping, 1200);
+}
+
+// dialog
+const dlg = document.getElementById("dlg");
+function updateHint() { document.getElementById("hint").textContent = HINTS[document.getElementById("f-type").value]; }
+function openDialog() { ["label","icon","value"].forEach(k => document.getElementById("f-"+k).value=""); updateHint(); dlg.showModal(); }
+document.getElementById("f-type").onchange = updateHint;
+document.getElementById("cancel").onclick = () => dlg.close();
+document.getElementById("save").onclick = () => {
+  const b = {
+    label: document.getElementById("f-label").value || "untitled",
+    icon:  document.getElementById("f-icon").value || "▢",
+    type:  document.getElementById("f-type").value,
+    value: document.getElementById("f-value").value,
+  };
+  buttons.push(b); save(buttons); render(); dlg.close();
+};
+
+render();
+ping();
+setInterval(ping, 10000);
+</script>
+</body>
+</html>

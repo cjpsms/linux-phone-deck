@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.PhoneMirror.Deck" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="android:windowBackground">@color/deck_bg</item>
+        <item name="android:colorBackground">@color/deck_bg</item>
+        <item name="colorPrimary">@color/deck_accent</item>
+        <item name="colorOnBackground">@color/deck_text</item>
+        <item name="android:statusBarColor">@color/deck_bg</item>
+        <item name="android:navigationBarColor">@color/deck_bg</item>
+    </style>
+</resources>

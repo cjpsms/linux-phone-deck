@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/deck_bg"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Phone Deck"
+            android:textColor="@color/deck_text"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textConnStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:text=""
+            android:textColor="@color/deck_text_dim"
+            android:textSize="12sp" />
+
+        <ImageButton
+            android:id="@+id/btnAdd"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="@drawable/tile_background"
+            android:contentDescription="Add tile"
+            android:src="@android:drawable/ic_input_add"
+            app:tint="@color/deck_text" />
+
+        <ImageButton
+            android:id="@+id/btnSettings"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/tile_background"
+            android:contentDescription="Settings"
+            android:src="@android:drawable/ic_menu_manage"
+            app:tint="@color/deck_text" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerTiles"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:padding="6dp" />
+
+    <TextView
+        android:id="@+id/textEmpty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="32dp"
+        android:text="No tiles yet — tap + to add an app or web link"
+        android:textColor="@color/deck_text_dim"
+        android:visibility="gone" />
+
+</LinearLayout>

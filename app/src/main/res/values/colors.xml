@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="deck_bg">#15171C</color>
+    <color name="deck_surface">#1F232B</color>
+    <color name="deck_surface_pressed">#2B313C</color>
+    <color name="deck_accent">#5B8DEF</color>
+    <color name="deck_text">#ECEFF4</color>
+    <color name="deck_text_dim">#9AA3B2</color>
+</resources>
