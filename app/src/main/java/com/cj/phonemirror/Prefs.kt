@@ -21,16 +21,8 @@ object Prefs {
             .apply()
     }
 
-    fun getLauncherItems(context: Context): List<LauncherItem> {
-        val saved = prefs(context).getString(KEY_LAUNCHER_ITEMS, "") ?: ""
-        if (saved.isNotBlank()) return LauncherItem.listFromJson(saved)
-        return listOf(
-            LauncherItem(LauncherItem.Type.APP, "org.vinegarhq.Sober", "Sober"),
-            LauncherItem(LauncherItem.Type.APP, "prismlauncher", "Prism"),
-            LauncherItem(LauncherItem.Type.APP, "steam", "Steam"),
-            LauncherItem(LauncherItem.Type.APP, "com.obsproject.Studio", "OBS"),
-        )
-    }
+    fun getLauncherItems(context: Context): List<LauncherItem> =
+        LauncherItem.listFromJson(prefs(context).getString(KEY_LAUNCHER_ITEMS, "") ?: "")
 
     fun saveLauncherItems(context: Context, items: List<LauncherItem>) {
         prefs(context).edit()

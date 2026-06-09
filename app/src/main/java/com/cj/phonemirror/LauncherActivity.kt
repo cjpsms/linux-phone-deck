@@ -54,7 +54,7 @@ class LauncherActivity : AppCompatActivity() {
             onLongPress = { item, position -> confirmRemove(item, position) }
         )
         findViewById<RecyclerView>(R.id.recyclerTiles).apply {
-            val cols = if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 5 else 3
+            val cols = if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 6 else 4
             layoutManager = GridLayoutManager(this@LauncherActivity, cols)
             adapter = this@LauncherActivity.adapter
         }

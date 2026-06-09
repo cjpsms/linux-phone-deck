@@ -10,7 +10,7 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -57,7 +57,7 @@ class AddTileActivity : AppCompatActivity() {
         adapter = AppPickAdapter { app ->
             finishWith(LauncherItem(LauncherItem.Type.APP, app.id, app.name))
         }
-        recycler.layoutManager = LinearLayoutManager(this)
+        recycler.layoutManager = GridLayoutManager(this, 4)
         recycler.adapter = adapter
 
         editFilter.addTextChangedListener(object : TextWatcher {
