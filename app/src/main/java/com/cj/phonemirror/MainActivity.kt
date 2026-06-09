@@ -8,6 +8,7 @@ import android.os.PowerManager
 import android.provider.Settings
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -28,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        findViewById<ImageButton>(R.id.btnBack).setOnClickListener { finish() }
 
         editUrl = findViewById(R.id.editUrl)
         editToken = findViewById(R.id.editToken)

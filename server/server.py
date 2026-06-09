@@ -149,7 +149,12 @@ class Handler(http.server.BaseHTTPRequestHandler):
         self.wfile.write(data)
 
     def do_GET(self):
-        self._json(404, {"error": "not found"})
+        if self.path == "/apps":
+            if self.headers.get("X-Token") != TOKEN:
+                return self._json(401, {"error": "bad token"})
+            self._json(200, {"apps": scan_desktop_apps()})
+        else:
+            self._json(404, {"error": "not found"})
 
     def do_POST(self):
         if self.headers.get("X-Token") != TOKEN:

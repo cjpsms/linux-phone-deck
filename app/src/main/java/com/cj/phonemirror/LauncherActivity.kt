@@ -51,7 +51,8 @@ class LauncherActivity : AppCompatActivity() {
 
         adapter = LauncherAdapter(
             onTap = { launchTile(it) },
-            onLongPress = { item, position -> confirmRemove(item, position) }
+            onLongPress = { item, position -> confirmRemove(item, position) },
+            onAddTap = { addTileLauncher.launch(Intent(this, AddTileActivity::class.java)) }
         )
         findViewById<RecyclerView>(R.id.recyclerTiles).apply {
             val cols = if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 6 else 4
@@ -76,7 +77,7 @@ class LauncherActivity : AppCompatActivity() {
     private fun renderItems() {
         val items = Prefs.getLauncherItems(this)
         adapter.submit(items)
-        textEmpty.visibility = if (items.isEmpty()) View.VISIBLE else View.GONE
+        textEmpty.visibility = View.GONE
     }
 
     /** Confirms the saved URL/token point at a live server, auto-discovering if not. */
